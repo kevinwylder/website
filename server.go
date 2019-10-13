@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -52,14 +51,8 @@ func CreateServer(static string) http.Handler {
 func (server *serverState) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	go server.logURL(req.URL.Path, req.Method)
 	if req.URL.Path == "/_" && req.Method == "POST" {
-		event := &Event{}
-		decoder := json.NewDecoder(req.Body)
-		decoder.Decode(event)
-		if event.Verify(server.secret) {
-			go event.Store(server.db)
-		} else {
-			http.Error(res, "Not Authorized", 401)
-		}
+		// Handle Event posts
+		http.Error(res, "", server.OnEvent(req.Body))
 		return
 	}
 	server.static.ServeHTTP(res, req)

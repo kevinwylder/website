@@ -17,7 +17,7 @@ func TestSignatureVerify(test *testing.T) {
 	}
 
 	for _, message := range passing {
-		event := &Event{}
+		event := &EventRequest{}
 		err := json.Unmarshal(message, event)
 		if err != nil {
 			test.Fatal(err)
@@ -28,7 +28,7 @@ func TestSignatureVerify(test *testing.T) {
 	}
 
 	for _, message := range failing {
-		event := &Event{}
+		event := &EventRequest{}
 		err := json.Unmarshal(message, event)
 		if err != nil {
 			test.Fatal(err)
